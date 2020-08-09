@@ -29,6 +29,19 @@ const articleSchema = {
 };
 // create article model - abstract representation of the database
 const Article = mongoose.model("Article", articleSchema);
+
+// routing
+app.get("/articles", (req, res) => {
+  // read all articles from database
+  Article.find((err, foundArticles) => {
+    // error check
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(foundArticles);
+    }
+  });
+});
 app.listen(3000, () => {
   console.log("Server started on port 3000");
 });
