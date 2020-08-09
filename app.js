@@ -51,12 +51,23 @@ app.post("/articles", (req, res) => {
     title: req.body.title,
     content: req.body.content,
   });
-  // save and send back status
+  // save to database and send back status
   newArticle.save((err) => {
     if (err) {
       res.send(err);
     } else {
       res.send("Successfully added a new article");
+    }
+  });
+});
+
+app.delete("/articles", (req, res) => {
+  // delete all articles in database
+  Article.deleteMany((err) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send("Successfully deleted all articles");
     }
   });
 });
