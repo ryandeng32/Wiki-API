@@ -31,6 +31,7 @@ const articleSchema = {
 const Article = mongoose.model("Article", articleSchema);
 
 // routing
+///////////////////////////////////////////Request Targeting all articles////////////////////
 
 app
   .route("/articles")
@@ -75,6 +76,23 @@ app
       }
     });
   });
+
+///////////////////////////////////////////Request Targeting specific articles////////////////////
+
+app.route("/articles/:articleTitle").get((req, res) => {
+  // read through the database to find match
+  Article.findOne({ title: req.params.articleTitle }, (err, foundArticle) => {
+    if (err) {
+      res.send(err);
+    } else {
+      if (foundArticle) {
+        res.send(foundArticle);
+      } else {
+        res.send("No article matching that title was found");
+      }
+    }
+  });
+});
 
 app.listen(3000, () => {
   console.log("Server started on port 3000");
