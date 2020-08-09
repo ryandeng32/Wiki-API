@@ -31,6 +31,7 @@ const articleSchema = {
 const Article = mongoose.model("Article", articleSchema);
 
 // routing
+// GET all articles
 app.get("/articles", (req, res) => {
   // read all articles from database
   Article.find((err, foundArticles) => {
@@ -42,6 +43,24 @@ app.get("/articles", (req, res) => {
     }
   });
 });
+
+// Post an article
+app.post("/articles", (req, res) => {
+  // save to mongoDB
+  const newArticle = new Article({
+    title: req.body.title,
+    content: req.body.content,
+  });
+  // save and send back status
+  newArticle.save((err) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send("Successfully added a new article");
+    }
+  });
+});
+
 app.listen(3000, () => {
   console.log("Server started on port 3000");
 });
