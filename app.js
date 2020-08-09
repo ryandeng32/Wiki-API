@@ -124,6 +124,17 @@ app
         }
       }
     );
+  })
+  .delete((req, res) => {
+    // DELETE all articles
+    // delete all articles in database
+    Article.deleteOne({ title: req.params.articleTitle }, (err) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send("Successfully deleted the selected article");
+      }
+    });
   });
 
 app.listen(3000, () => {
