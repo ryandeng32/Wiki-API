@@ -96,13 +96,26 @@ app
     });
   })
   .put((req, res) => {
-    Article.updateOne(
+    Article.update(
       { title: req.params.articleTitle },
       {
         title: req.body.title,
         content: req.body.content,
       },
       { overwrite: true },
+      (err) => {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send("Successfully updated article");
+        }
+      }
+    );
+  })
+  .patch((req, res) => {
+    Article.updateOne(
+      { title: req.params.articleTitle },
+      { $set: req.body },
       (err) => {
         if (err) {
           res.send(err);
