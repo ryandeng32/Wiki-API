@@ -79,20 +79,39 @@ app
 
 ///////////////////////////////////////////Request Targeting specific articles////////////////////
 
-app.route("/articles/:articleTitle").get((req, res) => {
-  // read through the database to find match
-  Article.findOne({ title: req.params.articleTitle }, (err, foundArticle) => {
-    if (err) {
-      res.send(err);
-    } else {
-      if (foundArticle) {
-        res.send(foundArticle);
+app
+  .route("/articles/:articleTitle")
+  .get((req, res) => {
+    // read through the database to find match
+    Article.findOne({ title: req.params.articleTitle }, (err, foundArticle) => {
+      if (err) {
+        res.send(err);
       } else {
-        res.send("No article matching that title was found");
+        if (foundArticle) {
+          res.send(foundArticle);
+        } else {
+          res.send("No article matching that title was found");
+        }
       }
-    }
+    });
+  })
+  .put((req, res) => {
+    Article.updateOne(
+      { title: req.params.articleTitle },
+      {
+        title: req.body.title,
+        content: req.body.content,
+      },
+      { overwrite: true },
+      (err) => {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send("Successfully updated article");
+        }
+      }
+    );
   });
-});
 
 app.listen(3000, () => {
   console.log("Server started on port 3000");
