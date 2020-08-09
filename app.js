@@ -13,10 +13,22 @@ app.use(
     extended: true,
   })
 );
-
 // use public directory to store static files (css, imgs)
 app.use(express.static("public"));
 
+// Set up mongoDB
+// connect to database
+mongoose.connect("mongodb://localhost:27017/wikiDB", {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+});
+// create article schema - blueprint of the database
+const articleSchema = {
+  title: String,
+  content: String,
+};
+// create article model - abstract representation of the database
+const Article = mongoose.model("Article", articleSchema);
 app.listen(3000, () => {
   console.log("Server started on port 3000");
 });
